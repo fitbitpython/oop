@@ -45,11 +45,13 @@ class Pizza:
     def addtoping(self,topping):
         self.incrediente.extend(topping)
 
-    def removetopings(self,toping):
-        try:
-            self.incrediente.remove(toping)
-        except:
-            print('Topingul nu se afla pe pizza!')
+    def removetopings(self,toping,*args):
+        for x in toping:
+            print(x)
+            try:
+                self.incrediente.remove(x)
+            except:
+                print('Topingul',x,'nu se afla pe pizza!')
 
     def removealltoppings(self):
         self.incrediente.clear()
@@ -64,7 +66,7 @@ pizza4=Pizza('Subtire','Mica')
 pizza1.addtoping(['sunca','carnati','porumb'])
 pizza1.calculatorpizza()
 pizza1.getpizzadescription()
-pizza1.removetopings('uuu')
+pizza1.removetopings(['carnati','sunca','alune'])
 pizza1.getpizzadescription()
 pizza1.removealltoppings()
 pizza1.calculatorpizza()
