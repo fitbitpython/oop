@@ -1,0 +1,164 @@
+class Employee:
+
+    a_raise = 1.01
+    number_of_empls = 0
+
+    def __init__(self, nume, prenume, pay):
+        self.first = prenume
+        self.last = nume
+        self.pay = pay
+        self.email = "{}{}@fitbit.com".format(prenume[:1].lower(), nume.lower())
+        Employee.number_of_empls += 1
+        self.employee_num = Employee.number_of_empls
+
+    def apply_raise(self):
+        self.pay = self.pay * self.a_raise
+
+
+emp1 = Employee('Stefan','Diana',2000)
+emp2 = Employee('Stefan','Diana',2000)
+emp3 = Employee('Stefan','Diana',2000)
+
+emp1.a_raise = 1.2
+emp1.apply_raise()
+
+
+class Dog:
+
+    def __init__(self, rasa, varsta, culoare):
+        self.rasa = rasa
+        self.varsta = varsta
+        self.culoare = culoare
+
+    def latra(self):
+        return 'Ham!' * self.varsta
+
+
+
+
+dog1 = Dog('labrador', 5, 'verde')
+dog2 = Dog('maidanez', 10, 'rosu')
+
+"""
+tema: clasa pizza cu atribute: tip_blat (subtire, normal,pufos), dimensiune(mica,mare), ingrediente(default: sos rosii, mozarella, *args), pret
+pret = tip_blat = normal - 20 lei, pufos = 22, subtire = 24
+dimensiune mica = 1, mare = 1.3
+
+pret = blat*dimensiune + 2*topping
+topping = len[*args-2]
+
+nr_pizza: se incrementeaza cu fiecare instantiere
+
+metode:
+
+get_description return "Pizza mica cu blat pufos cu ingredientele x si pret y"
+add_topping(string): adauga topping si creste pretul
+remove_topping(string); update ista ingrediente si pret
+remove_toppings(): scoate toate extra toppings si updateaza pret
+
+creat cateva pizze + apelare
+
+"""
+
+class Pizza:
+
+    numar_pizza = 0
+    tip_pizza = 0
+    list_ingrediente_standard = ['sos rosii','mozarella']
+    dex_pret_blat = {'normal': 20, 'pufos': 22, 'subtire': 24}
+    dex_pret_dimensiune = {'mica': 1, 'mare': 1.3}
+
+
+    def calculeaza_pret(self):
+
+        self.pret = self.dex_pret_blat[self.tip_blat] * self.dex_pret_dimensiune[self.dimensiune] + 2 \
+                    * (len(self.ingrediente) - 2)
+
+
+    def data_validation_blat(self,tip_blat):
+
+        #print(tip_blat.lower())
+        if tip_blat.lower() in self.dex_pret_blat.keys():
+            self.tip_blat = tip_blat.lower()
+        else:
+            print('Tipul blatului poate fi normal, pufos sau subtire. Standard = normal')
+            self.tip_blat = 'normal'
+
+
+    def data_validation_dimensiune(self,dimensiune):
+
+        #print(dimensiune.lower())
+        if dimensiune.lower() in self.dex_pret_dimensiune.keys():
+            self.dimensiune = dimensiune.lower()
+        else:
+            print('Dimensiunea blatului poate fi mica sau mare. Standard = mica')
+            self.dimensiune = 'mica'
+
+
+    def __init__(self, tip_blat = 'normal', dimensiune = 'mica', *args):
+
+        #self.tip_blat = tip_blat
+        #self.dimensiune = dimensiune
+
+        self.data_validation_blat(tip_blat)
+        self.data_validation_dimensiune(dimensiune)
+        self.ingrediente = self.list_ingrediente_standard.copy()
+        self.ingrediente.extend(args)
+
+        Pizza.numar_pizza += 1
+        self.tip_pizza += Pizza.numar_pizza
+        self.calculeaza_pret()
+
+
+    def get_description (self):
+
+        print("Pizza {} cu blat {} si cu urmatoarele ingrediente :{}. Pret total {}".format(self.dimensiune,
+                                            self.tip_blat,self.ingrediente, self.pret))
+        #return "Pizza mica cu blat pufos cu ingredientele x si pret y"
+
+
+    def add_topping(self, *args):
+
+        for i in args:
+            if i not in self.ingrediente:
+                self.ingrediente.append(i)
+        self.calculeaza_pret()
+
+
+    def remove_topping(self, *args):
+
+        for i in args:
+            if i in self.ingrediente:
+                self.ingrediente.remove(i)
+        self.calculeaza_pret()
+
+
+    def remove_toppings(self):
+
+        self.ingrediente = self.list_ingrediente_standard.copy()
+        self.calculeaza_pret()
+
+
+standard = Pizza()
+standard.get_description()
+standard.add_topping('bacon')
+standard.get_description()
+
+regina = Pizza('pufos', 'mare', 'ciuperci', 'masline', 'bacon')
+regina.get_description()
+regina.add_topping('masline')
+regina.get_description()
+regina.add_topping('bacon','ananas')
+regina.get_description()
+regina.remove_topping('pizza')
+regina.get_description()
+regina.remove_topping('bacon')
+regina.get_description()
+regina.remove_toppings()
+regina.get_description()
+
+frankie = Pizza('pUfoS','mARE')
+frankie.get_description()
+
+if __name__ == "__main__":
+    print('module')
