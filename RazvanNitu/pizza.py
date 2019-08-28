@@ -25,14 +25,14 @@ class Pizza:
         Pizza.nr_of_pizzamade += 1
 
     @classmethod
-    def pizza_default(cls,nume_pizza,dimensiune,blat):
-
-        if nume_pizza in Pizza.ingrediente_pizza_default:
-            ingrediente = Pizza.ingrediente_pizza_default[nume_pizza]
+    def create_pizza(cls,nume,dimensiune,blat):
+        if nume in Pizza.ingrediente_pizza_default:
+            created_pizza = cls(blat,dimensiune,[],nume)
+            created_pizza.addtoping(Pizza.ingrediente_pizza_default[nume])
+            created_pizza.set_price()
+            return created_pizza
         else:
             print('Nu avem acest tip de pizza')
-        pret = (Pizza.blaturi[blat]*Pizza.dimensiuni[dimensiune] + (2*len(Pizza.ingrediente_pizza_default[nume_pizza]))) * Pizza.weekday_price()
-        print('Detalii',pret,dimensiune,ingrediente,nume_pizza)
 
     def set_price(self):
 
@@ -58,8 +58,8 @@ class Pizza:
         return(self.pret)
 
     @property
-    def getdescription(self):
-        return(self.name, self.blat,self.dimensiune,self.ingrediente,self.pret)
+    def description(self):
+        return self.name, self.blat,self.dimensiune,self.ingrediente,self.pret
 
     def addtoping(self,topping):
         self.ingrediente.extend(topping)
@@ -80,11 +80,10 @@ class Pizza:
 
     @staticmethod
     def weekday_price():
-        day = date.today()
-        day1 = day.weekday()
-        if day1 == 6:
+        day = date.today().weekday()
+        if day == 6:
             coeficient = 1.1
-        elif day1 == 1:
+        elif day == 1:
             coeficient = 0.8
         else:
             coeficient = 1
@@ -98,11 +97,16 @@ pizza1 = Pizza('Subtire', 'Mare', ['x', 'y', 'z'],'margherita')
 #pizza1.getdescription()
 #pizza1.removealltoppings()
 #pizza1.getdescription()
-pizza3=Pizza.pizza_default('Quatro_Stagione','Mare','Pufos')
-pizza4=Pizza.pizza_default('Quatro_Formagi','Mare','Pufos')
-pizza4=Pizza.pizza_default('Suprema','Mare','Pufos')
+pizza3=Pizza.create_pizza('Quatro_Stagione','Mare','Pufos')
+pizza4=Pizza.create_pizza('Quatro_Formagi','Mare','Pufos')
+pizza4=Pizza.create_pizza('Suprema','Mare','Pufos')
 
-print('Descriere',pizza1.getdescription)
+import pdb; pdb.set_trace()
+
+print(pizza3.description)
+
+
+
 
 
 
